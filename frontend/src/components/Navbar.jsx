@@ -32,7 +32,7 @@ const Navbar = () => {
             Home
           </li>
         </Link>
-        <Link>
+        <Link to={'/post'}>
           <li className="py-2 px-4 rounded-lg hover:bg-gray-300 border border-gray-100 hover:border-gray-300">
             Posts
           </li>

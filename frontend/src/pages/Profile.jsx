@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import MyPosts from "../components/MyPosts";
+
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
@@ -75,6 +77,10 @@ const Profile = () => {
             </Link>
           </div>
         )}
+      </div>
+
+      <div className="border mt-10 bg-gray-200">
+      <MyPosts />
       </div>
     </>
   );

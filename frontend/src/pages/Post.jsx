@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect} from "react";
 import Navbar from "../components/Navbar";
-// import NewPost from "../components/NewPost";
+import { useNavigate } from "react-router-dom";
+import NewPost from "../components/NewPost";
 
 
-
-const Home = () => {
+const Post = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,13 +13,12 @@ const Home = () => {
       navigate("/login");
     }
   }, []);
-
   return (
     <>
-    <Navbar />
-    {/* <NewPost /> */}
+      <Navbar />
+      <NewPost />
     </>
   );
 };
 
-export default Home;
+export default Post;

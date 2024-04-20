@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Form from './pages/Form';
 import Explore from './pages/Explore';
+import Post from './pages/Post';
+
 
 
 
@@ -21,6 +23,7 @@ const App = () => {
       <Route path="/profile/:username" element={<Profile />} />
       <Route path="/editprofile" element={<Form />} />
       <Route path="/explore" element={<Explore />} />
+      <Route path="/post" element={<Post />} />
     </Routes>
   </Router>
   )
