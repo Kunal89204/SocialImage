@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-// import NewPost from "../components/NewPost";
+import Posts from "../components/Posts";
+
+
 
 
 
@@ -18,7 +20,7 @@ const Home = () => {
   return (
     <>
     <Navbar />
-    {/* <NewPost /> */}
+    <Posts />
     </>
   );
 };

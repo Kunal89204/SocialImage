@@ -72,6 +72,45 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// edit profile route
+router.post(
+  "/editprofile/:id",
+  upload.fields([{ name: "file1" }, { name: "file2" }]),
+  async (req, res) => {
+    try {
+      const file1 = req.files["file1"][0].filename;
+      const file2 = req.files["file2"][0].filename;
+      const userId = req.params.id;
+
+      const { fullname, age, bio, location, website, facebook, twitter, linkedin, instagram } = req.body;
+
+      const updatedData = {
+        fullName: fullname,
+        age,
+        bio,
+        location,
+        website,
+        "socialMedia.facebook": facebook,
+        "socialMedia.twitter": twitter,
+        "socialMedia.linkedIn": linkedin,
+        "socialMedia.instagram": instagram,
+        profileImg: file1,
+        bannerImg: file2
+      };
+
+      // Find the user by ID and update the data, returning the updated document
+      const updatedUser = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+
+      console.log("User data updated:", updatedUser);
+
+      res.status(200).json({ message: "Profile updated successfully", updatedUser });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
 // get particular user info
 router.get("/userinfo/:username", async (req, res) => {
   try {

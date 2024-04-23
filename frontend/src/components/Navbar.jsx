@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios"
-
+import axios from "axios";
 
 const Navbar = () => {
   const [modal, setModal] = useState(false);
@@ -13,12 +12,13 @@ const Navbar = () => {
   );
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/user/userinfoid/${userId}`).then((response) => {
-      setProfile(`http://localhost:3000/uploads/${response.data.profileImg}`);
-      setUserData(response.data)
-    });
+    axios
+      .get(`http://localhost:3000/user/userinfoid/${userId}`)
+      .then((response) => {
+        setProfile(`http://localhost:3000/uploads/${response.data.profileImg}`);
+        setUserData(response.data);
+      });
   }, [userId]);
-  
 
   const modalDisplay = () => {
     setModal(!modal);
@@ -27,17 +27,17 @@ const Navbar = () => {
   return (
     <div className="flex justify-between p-2 bg-gray-100">
       <nav className="flex gap-10">
-        <Link to={'/'}>
+        <Link to={"/"}>
           <li className="py-2 px-4 rounded-lg hover:bg-gray-300 border border-gray-100 hover:border-gray-300">
             Home
           </li>
         </Link>
-        <Link to={'/post'}>
+        <Link to={"/post"}>
           <li className="py-2 px-4 rounded-lg hover:bg-gray-300 border border-gray-100 hover:border-gray-300">
             Posts
           </li>
         </Link>
-        <Link to={'/explore'}>
+        <Link to={"/explore"}>
           <li className="py-2 px-4 rounded-lg hover:bg-gray-300 border border-gray-100 hover:border-gray-300">
             Explore
           </li>
@@ -47,7 +47,6 @@ const Navbar = () => {
             Chats
           </li>
         </Link>
-       
       </nav>
       <div className="cursor-pointer" onClick={modalDisplay}>
         <img src={profile} alt="" className="w-10 rounded-full h-10" />
@@ -63,15 +62,16 @@ const Dropdown = () => {
   const navigate = useNavigate();
 
   const logOut = () => {
-    localStorage.removeItem("userId")
-    navigate('/')
-  }
+    localStorage.removeItem("userId");
+    navigate("/");
+  };
 
-  
   useEffect(() => {
-    axios.get(`http://localhost:3000/user/userinfoid/${userId}`).then((response) => {
-      setUserData(response.data.username);
-    });
+    axios
+      .get(`http://localhost:3000/user/userinfoid/${userId}`)
+      .then((response) => {
+        setUserData(response.data.username);
+      });
   }, [userId]);
 
   return (
@@ -81,7 +81,9 @@ const Dropdown = () => {
           <Link to={`/profile/${userData}`}>My Profile</Link>
         </div>
 
-        <div className="py-2 px-4" onClick={logOut}>Logout</div>
+        <div className="py-2 px-4" onClick={logOut}>
+          Logout
+        </div>
       </div>
     </>
   );

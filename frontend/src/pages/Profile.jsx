@@ -12,7 +12,6 @@ const Profile = () => {
 
 
   const userId = localStorage.getItem("userId");
-  console.log(username, userId)
 
   useEffect(() => {
     axios.get(`http://localhost:3000/user/userinfo/${username}`).then((response) => {

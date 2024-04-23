@@ -48,9 +48,9 @@ const Explore = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-black h-screen flex gap-5 flex-wrap p-2">
+      <div className="bg-black min-h-screen h-max flex gap-2 justify-around flex-wrap p-2">
         {users.map((user, index) => (
-          <div className="bg-gray-900 w-1/5 h-fit rounded-lg pt-6 pb-2" key={index}>
+          <div className="bg-gray-900 w-[19%] h-fit rounded-lg pt-6 pb-2" key={index}>
             <div className="overflow-hidden flex justify-center">
               <img
                 src={user.profileImg ? `http://localhost:3000/uploads/${user.profileImg}` : 'https://cdn-icons-png.flaticon.com/512/10337/10337609.png'}

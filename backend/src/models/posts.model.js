@@ -4,7 +4,7 @@ const postSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
     },
 
     imgUrl: {
@@ -17,4 +17,4 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("posts", postSchema);
+module.exports = mongoose.model("posts", postSchema);     
