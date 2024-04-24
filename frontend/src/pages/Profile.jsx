@@ -3,12 +3,16 @@ import Navbar from "../components/Navbar";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import MyPosts from "../components/MyPosts";
+import ProfileModal from "../components/alerts/ProfileModal";
+
+
 
 
 const Profile = () => {
   const [userData, setUserData] = useState({});
   const [editProfile, setEditProfile] = useState(false);
   let { username} = useParams();
+  const [openProfileModal, setOpenProfileModal] = useState(false)
 
 
   const userId = localStorage.getItem("userId");
@@ -32,16 +36,22 @@ const Profile = () => {
             alt=""
             className="h-full w-full"
           />
+                     
         </div>
+        {openProfileModal && <ProfileModal/>}
         <div className="w-40 h-40 border-[5px] border-gray-300 rounded-full absolute bottom-0 translate-y-1/2 left-10 overflow-hidden">
           <img
             src={userData.profileImg? `http://localhost:3000/uploads/${userData.profileImg}` : 'https://cdn-icons-png.flaticon.com/512/10337/10337609.png'}
             alt=""
+            className="hover:opacity-50 transition-all duration-500 cursor-pointer"
+            onClick={()=>setOpenProfileModal(!openProfileModal)}
           />
+          
         </div>
       </div>
       <div className="flex justify-center ">
         <div className="">
+          
           <div className="font-semibold text-3xl">{userData.fullName ? userData.fullName : userData.username}</div>
           <div className="text-sm">{userData.location}</div>
           <div className="flex border gap-2 ">

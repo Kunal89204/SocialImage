@@ -60,7 +60,7 @@ const Form = () => {
 
     try {
       const response = await fetch(`http://localhost:3000/user/editprofile/${userId}`, {
-        method: "POST",
+        method: "PUT",
         body: formData
       });
       const data = await response.json(); // Parsing response data if it's JSON

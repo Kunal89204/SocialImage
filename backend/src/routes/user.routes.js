@@ -73,7 +73,7 @@ router.post("/login", async (req, res) => {
 });
 
 // edit profile route
-router.post(
+router.put(
   "/editprofile/:id",
   upload.fields([{ name: "file1" }, { name: "file2" }]),
   async (req, res) => {
