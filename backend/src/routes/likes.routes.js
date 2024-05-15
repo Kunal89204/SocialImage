@@ -25,4 +25,39 @@ router.post("/toggle/:id", async (req, res) => {
     }
 });
 
+// getting all likes of a particular user
+router.get('/likedby/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const allLikes = await Likes.find({userId})
+        const likes = allLikes.map((like) => like.postId)
+        res.json(likes)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// Route to get total number of likes for each post
+router.get("/total-likes", async (req, res) => {
+    try {
+      // Aggregate likes collection to count the number of likes for each post
+      const likesCount = await Likes.aggregate([
+        {
+          $group: {
+            _id: "$postId",
+            totalLikes: { $sum: 1 }
+          }
+        }
+      ]);
+  
+      // Return the result
+      res.json(likesCount);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+  
+  
+
 module.exports = router;

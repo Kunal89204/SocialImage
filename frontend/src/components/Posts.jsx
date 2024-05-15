@@ -4,10 +4,24 @@ import { Link } from "react-router-dom";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FaShare } from "react-icons/fa";
+import { AiFillLike } from "react-icons/ai";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
+  const [likes, setLikes] = useState([]);
+  const [likeCount, setLikeCount] = useState([])
   const userId = localStorage.getItem("userId")
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/like/total-likes')
+    .then((respo) => setLikeCount(respo.data))
+   
+  }, [])
+
+  useEffect(() => {
+    axios.get(`http://localhost:3000/like/likedby/${userId}`)
+    .then((response) => setLikes(response.data))
+  }, [])
 
   useEffect(() => {
     axios
@@ -53,8 +67,10 @@ const Posts = () => {
               <div>{post.description}</div>
               <div>
                 <div className="flex items-center justify-around">
-                  <div>
-                    <AiOutlineLike onClick={(e) => likeFun(e, post._id)} />
+                  <div className="flex items-center">
+                    {likes.includes(post._id)?  <AiFillLike onClick={(e) => likeFun(e, post._id)} /> : <AiOutlineLike onClick={(e) => likeFun(e, post._id)} /> }
+                    {(likeCount.find(item => item._id === post._id) && likeCount.find(item => item._id === post._id).totalLikes) ? likeCount.find(item => item._id === post._id).totalLikes : <div>0</div>}
+
                   </div>
                   <div>
                     <FaRegCommentDots />
