@@ -7,6 +7,7 @@ import { FaShare } from "react-icons/fa";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
+  const userId = localStorage.getItem("userId")
 
   useEffect(() => {
     axios
@@ -16,6 +17,11 @@ const Posts = () => {
         console.log(error);
       });
   }, []);
+
+  const likeFun = (e, postId) => {
+    axios.post(`http://localhost:3000/like/toggle/${userId}`, {postId})
+    .then((response) => console.log(response.data))
+  };
 
   return (
     <div className="flex gap-10 justify-around p-2 flex-wrap">
@@ -47,9 +53,15 @@ const Posts = () => {
               <div>{post.description}</div>
               <div>
                 <div className="flex items-center justify-around">
-                 <div><AiOutlineLike /></div>
-                 <div><FaRegCommentDots /></div>
-                 <div><FaShare /></div>
+                  <div>
+                    <AiOutlineLike onClick={(e) => likeFun(e, post._id)} />
+                  </div>
+                  <div>
+                    <FaRegCommentDots />
+                  </div>
+                  <div>
+                    <FaShare />
+                  </div>
                 </div>
               </div>
             </div>

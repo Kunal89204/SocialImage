@@ -4,6 +4,7 @@ const connectDB = require("./src/db/connectdb");
 const userRoute = require("./src/routes/user.routes");
 const followRoute = require("./src/routes/follow.routes")
 const postRoute = require("./src/routes/post.routes")
+const likeRoute = require('./src/routes/likes.routes')
 
 // connect to database
 connectDB();
@@ -13,6 +14,7 @@ connectDB();
 app.use("/user", userRoute);
 app.use("/followapi", followRoute);
 app.use("/post", postRoute)
+app.use("/like", likeRoute)
 
 // Start the server
 app.listen(PORT, () => {
