@@ -5,12 +5,14 @@ import { AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FaShare } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
+import CommentBox from "./NewComment"
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [likes, setLikes] = useState([]);
   const [likeCount, setLikeCount] = useState([])
   const userId = localStorage.getItem("userId")
+  const [commentDisplay, setCommentDisplay] = useState(false)
 
   useEffect(() => {
     axios.get('http://localhost:3000/like/total-likes')
@@ -39,6 +41,8 @@ const Posts = () => {
 
   return (
     <div className="flex gap-10 justify-around p-2 flex-wrap">
+
+
       {posts &&
         posts.map((post, index) => {
           return (
@@ -73,13 +77,15 @@ const Posts = () => {
 
                   </div>
                   <div>
-                    <FaRegCommentDots />
+                   
+                    <FaRegCommentDots onClick={()=>setCommentDisplay(!commentDisplay)} />
                   </div>
                   <div>
                     <FaShare />
                   </div>
                 </div>
               </div>
+              {commentDisplay && <CommentBox postId={post._id} userId={userId} />}
             </div>
           );
         })}
