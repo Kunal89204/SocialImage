@@ -68,7 +68,7 @@ const Posts = () => {
                   alt="post"
                 />
               </div>
-              <div>{post.description}</div>
+              <div className="p-2 border-b">{post.description}</div>
               <div>
                 <div className="flex items-center justify-around">
                   <div className="flex items-center">

@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {useNavigate} from 'react-router-dom'
 
 const NewPost = () => {
+  const navigate = useNavigate()
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
-  const userId = localStorage.getItem("userId")
+  const [preview, setPreview] = useState(null); // State to hold the image preview URL
+  const userId = localStorage.getItem("userId");
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile)); // Set the image preview URL
   };
 
   const handleSubmit = async (event) => {
@@ -29,7 +34,7 @@ const NewPost = () => {
         }
       );
 
-      console.log("Post created successfully:", response.data);
+      navigate('/')
     } catch (error) {
       console.error("Error creating post:", error);
     }
@@ -82,6 +87,15 @@ const NewPost = () => {
             />
           </label>
         </div>
+        {preview && (
+          <div className="flex justify-center p-4">
+            <img
+              src={preview}
+              alt="Preview"
+              className="max-w-full h-auto rounded-lg shadow-md"
+            />
+          </div>
+        )}
         <div className="flex justify-center p-10">
           <button
             type="submit"
