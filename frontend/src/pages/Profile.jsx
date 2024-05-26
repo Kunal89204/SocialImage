@@ -13,9 +13,19 @@ const Profile = () => {
   const [editProfile, setEditProfile] = useState(false);
   let { username} = useParams();
   const [openProfileModal, setOpenProfileModal] = useState(false)
+  const [followingCount, setFollowingCount] = useState("")
+  const [followersCount, setFollowersCount] = useState("")
 
 
   const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    axios.get(`http://localhost:3000/followapi/followerscount/${userId}`)
+    .then((respo) => {
+      setFollowersCount(respo.data.followersCount)
+      setFollowingCount(respo.data.followingCount)
+    })
+  }, [userId])
 
   useEffect(() => {
     axios.get(`http://localhost:3000/user/userinfo/${username}`).then((response) => {
@@ -75,6 +85,10 @@ const Profile = () => {
                 Twitter
               </Link>
             )}
+          </div>
+          <div className="flex gap-5">
+            <div>followers: <span>{followersCount}</span></div>
+            <div>following: <span>{followingCount}</span></div>
           </div>
         </div>
         {editProfile && (

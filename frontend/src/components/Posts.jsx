@@ -46,7 +46,7 @@ const Posts = () => {
       {posts &&
         posts.map((post, index) => {
           return (
-            <div key={index} className="border w-[25%] shadow-lg rounded-lg">
+            <div key={index} className="border w-[25%]  shadow-lg rounded-lg">
               <div className="flex items-center gap-10 p-1">
                 <div className="w-10 rounded-full overflow-hidden aspect-square">
                   <Link to={`/profile/${post.userId.username}`}>

@@ -16,7 +16,6 @@ const NewComment = ({postId,  userId}) => {
       <button type="submit">comment</button>
       </form>
       </div>
-
     </div>
   )
 }

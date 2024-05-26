@@ -112,6 +112,20 @@ router.get("/followers/:id", async (req, res) => {
   }
 })
 
+router.get("/followerscount/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const followersCount = await Follow.countDocuments({ user: userId });
+    const followingCount = await Follow.countDocuments({ follower: userId });
+
+
+    res.status(200).json({ followersCount, followingCount });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 
 module.exports = router;
