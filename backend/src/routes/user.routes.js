@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user.model");
 const upload = require("../middlewares/multer");
 const jwt = require("jsonwebtoken")
+
 /* GET home page. */
 router.get("/", async function (req, res, next) {
   try {
@@ -121,6 +122,8 @@ router.get("/userinfo/:username", async (req, res) => {
     console.log(error);
   }
 });
+
+
 
 // userprofile with id
 router.get("/userinfoid/:id", async (req, res) => {

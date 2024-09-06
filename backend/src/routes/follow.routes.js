@@ -127,5 +127,16 @@ router.get("/followerscount/:id", async (req, res) => {
   }
 });
 
+router.get("/followinfo", async (req, res) => {
+  try {
+    // Query the Follow model and populate the 'follower' and 'user' fields
+    const data = await Follow.find().populate('follower').populate('user');
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
 module.exports = router;
