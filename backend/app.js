@@ -1,14 +1,11 @@
 const express = require("express")
-const dotenv = require("dotenv")
-const cors = require("cors")
-const bodyParser = require("body-parser") // Corrected typo here
-const path = require("path")
-
 const app = express();
+const cors = require("cors")
+const bodyPraser = require("body-parser")
+const dotenv = require('dotenv')
 
 app.use(cors())
-dotenv.config();
-app.use(bodyParser.json()); // Corrected typo here
-app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
+app.use(bodyPraser.json())
+dotenv.config()
 
 module.exports = app;

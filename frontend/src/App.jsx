@@ -1,34 +1,45 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+// src/App.js
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
-import Login from "./pages/Login"
+import Login from './pages/Login';
 import Register from './pages/Register';
+import { useAuthStore } from './context/store';
+import ProtectedRoute from './components/ProtectedRoute';
+import CreatePost from './pages/CreatePost';
+import Layout from './components/Layout';
 import Profile from './pages/Profile';
-import Form from './pages/Form';
+import Stepper from './pages/Stepper';
 import Explore from './pages/Explore';
 import Post from './pages/Post';
-
-
-
-
+import Requests from './pages/Requests';
 
 
 
 
 const App = () => {
+  const { validateToken, user } = useAuthStore();
+
+  useEffect(() => {
+    validateToken();
+  }, []);
+
   return (
     <Router>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/profile/:username" element={<Profile />} />
-      <Route path="/editprofile" element={<Form />} />
-      <Route path="/explore" element={<Explore />} />
-      <Route path="/post" element={<Post />} />
-    </Routes>
-  </Router>
-  )
+      <Routes>
+        <Route path="/" element={<ProtectedRoute><Layout><Home /></Layout></ProtectedRoute>} />
+        <Route path="/:username" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
+        <Route path="/createpost" element={<ProtectedRoute><Layout><CreatePost /></Layout></ProtectedRoute>} />
+        <Route path="/explore" element={<ProtectedRoute><Layout><Explore /></Layout></ProtectedRoute>} />
+        <Route path="/requests" element={<ProtectedRoute><Layout><Requests /></Layout></ProtectedRoute>} />
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+        <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
+        <Route path='/stepper' element={<Stepper />} />
+        <Route path='/post/:postId' element={<Layout><Post/></Layout>} />
+      </Routes>
+    
+    </Router>
+  );
 }
 
-export default App
+export default App;

@@ -1,111 +1,122 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import MyPosts from "../components/MyPosts";
-import ProfileModal from "../components/alerts/ProfileModal";
-
-
-
+import React, { useEffect, useState } from 'react';
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box, Button, Skeleton, Stack, Flex } from '@chakra-ui/react';
+import { Link, useParams } from 'react-router-dom';
+import { MdEdit } from 'react-icons/md';
+import EditProfileModal from '../components/EditProfileModal';
+import axios from 'axios';
+import { useAuthStore } from '../context/store';
 
 const Profile = () => {
+  const { username } = useParams();
+  const [isModalOpen, setModalOpen] = useState(false);
   const [userData, setUserData] = useState({});
-  const [editProfile, setEditProfile] = useState(false);
-  let { username} = useParams();
-  const [openProfileModal, setOpenProfileModal] = useState(false)
-  const [followingCount, setFollowingCount] = useState("")
-  const [followersCount, setFollowersCount] = useState("")
-
-
-  const userId = localStorage.getItem("userId");
+  const [isProfile, setIsProfile] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuthStore();
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/followapi/followerscount/${userId}`)
-    .then((respo) => {
-      setFollowersCount(respo.data.followersCount)
-      setFollowingCount(respo.data.followingCount)
-    })
-  }, [userId])
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/userinfo/${username}`)
+      .then((respo) => {
+        setUserData(respo.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false); // Ensure loading state is reset even if there's an error
+      });
+  }, [username]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/user/userinfo/${username}`).then((response) => {
-      setUserData(response.data);
-      if (response.data._id === userId) {
-        setEditProfile(true);
-      }
-    });
-  }, [username, userId]);
-  
+    if (user.user.username === username) {
+      setIsProfile(true);
+    }
+  }, [username, user.user.username]);
+
   return (
-    <>
-      <Navbar />
-      <div className=" relative">
-        <div className="bg-gray-50 h-80 m-2 rounded-lg overflow-hidden">
-          <img
-            src={userData.bannerImg ? `http://localhost:3000/uploads/${userData.bannerImg}` : 'https://image-assets.eu-2.volcanic.cloud/api/v1/assets/images/391ffeaf6a4f87f52f34d9d5874ee869?t=1705059868&webp_fallback=png'}
-            alt=""
-            className="h-full w-full"
-          />
-                     
-        </div>
-        {openProfileModal && <ProfileModal/>}
-        <div className="w-40 h-40 border-[5px] border-gray-300 rounded-full absolute bottom-0 translate-y-1/2 left-10 overflow-hidden">
-          <img
-            src={userData.profileImg? `http://localhost:3000/uploads/${userData.profileImg}` : 'https://cdn-icons-png.flaticon.com/512/10337/10337609.png'}
-            alt=""
-            className="hover:opacity-50 transition-all duration-500 cursor-pointer"
-            onClick={()=>setOpenProfileModal(!openProfileModal)}
-          />
-          
-        </div>
-      </div>
-      <div className="flex justify-center ">
-        <div className="">
-          
-          <div className="font-semibold text-3xl">{userData.fullName ? userData.fullName : userData.username}</div>
-          <div className="text-sm">{userData.location}</div>
-          <div className="flex border gap-2 ">
-            {userData.socialMedia && userData.socialMedia.facebook && (
-              <Link to={`https://${userData.socialMedia.facebook}`}>
-                Facebook
-              </Link>
-            )}
-            {userData.socialMedia && userData.socialMedia.instagram && (
-              <Link to={`https://${userData.socialMedia.instagram}`}>
-                Instagram
-              </Link>
-            )}
-            {userData.socialMedia && userData.socialMedia.linkedIn && (
-              <Link to={`https://${userData.socialMedia.linkedIn}`}>
-                LinkedIn
-              </Link>
-            )}
-            {userData.socialMedia && userData.socialMedia.twitter && (
-              <Link to={`https://${userData.socialMedia.twitter}`}>
-                Twitter
-              </Link>
-            )}
-          </div>
-          <div className="flex gap-5">
-            <div>followers: <span>{followersCount}</span></div>
-            <div>following: <span>{followingCount}</span></div>
-          </div>
-        </div>
-        {editProfile && (
-          <div className="">
-            <Link to={"/editprofile"}>
-              <button className="py-2 px-4 rounded-lg cursor-pointer ml-20 bg-orange-400 text-white">
-                Edit Profile
-              </button>
-            </Link>
-          </div>
+    <div className='flex'>
+      <div className='w-2/3 p-8'>
+        {loading ? (
+          <Stack spacing={4}>
+            <Flex alignItems={'center'} gap={'8px'}>
+              <Skeleton startColor="gray.700"
+                endColor="gray.900" height="150px" width="150px" borderRadius="full" />
+              <Box>
+                <Skeleton height="30px" startColor="gray.700"
+                endColor="gray.900"  width="200px" borderRadius={'20px'} />
+                <Skeleton height="10px"  startColor="gray.700"
+                endColor="gray.900"        marginY={'10px'} width="100px" borderRadius={'20px'} />
+                <Skeleton height="10px" startColor="gray.700"
+                endColor="gray.900" width="300px" borderRadius={'20px'} />
+                <Skeleton height="10px" startColor="gray.700"
+                endColor="gray.900" marginY={'5px'} width="300px" borderRadius={'20px'} />
+              </Box>
+            </Flex>
+          </Stack>
+        ) : (
+          <>
+            <div className='flex items-center gap-10'>
+              <div className='rounded-full w-32 h-32 overflow-hidden'><img src={userData?.profileImg} alt="" className='rounded-full w-32 ' /></div>
+              <div>
+                <h1 className='text-3xl'>{userData.fullName}</h1>
+                <h1 className='text-gray-500'>@{userData.username}</h1>
+                <p className='text-gray-400 text-sm pt-2 max-w-80 line-clamp-3'>{userData.bio}</p>
+              </div>
+            </div>
+
+            <div>
+              <Box width="600px" margin="auto" padding="4">
+                <Tabs variant="soft-rounded" colorScheme="teal">
+                  <TabList>
+                    <Tab margin={4}>Posts</Tab>
+                    <Tab margin={4}>Comments</Tab>
+                    <Tab margin={4}>Saved</Tab>
+                    <Tab margin={4}>Upvotes</Tab>
+                  </TabList>
+
+                  <TabPanels>
+                    <TabPanel>
+                      <p>Posts data will be displayed here.</p>
+                    </TabPanel>
+                    <TabPanel>
+                      <p>Comments data will be displayed here.</p>
+                    </TabPanel>
+                    <TabPanel>
+                      <p>Saved items will be displayed here.</p>
+                    </TabPanel>
+                    <TabPanel>
+                      <p>Upvotes data will be displayed here.</p>
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs>
+              </Box>
+            </div>
+          </>
         )}
       </div>
-
-      <div className="border mt-10 bg-gray-200">
-      <MyPosts />
+      <div className='w-1/3'>
+        <div className='sticky top-32 border border-gray-700 right-10 rounded-2xl overflow-hidden'>
+          <div>{loading ? <Skeleton startColor="gray.700"
+                endColor="gray.900" height={'150px'} maxHeight="182px" width="full" /> : <img src={userData.bannerImg} alt="" className='max-h-[182px] min-w-full' />}</div>
+          <div className='p-2'>
+            <div className='flex justify-between py-2'>
+              <div>{loading?<Skeleton height={'15px'} startColor="gray.700"
+                endColor="gray.900" width={'100px'}/>:userData.username}</div>
+              {isProfile && (
+                <Button onClick={() => setModalOpen(true)} colorScheme="teal" size="sm" rightIcon={<MdEdit />}>
+                  Edit Profile
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+
+      <EditProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        userData={userData}
+      />
+    </div>
   );
 };
 

@@ -4,11 +4,15 @@ const followSchema = new mongoose.Schema(
   {
    follower: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "users"
    },
    user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "users"
+   },
+   isAccepted:{
+    type:Boolean,
+    default: false
    }
   },
   { timestamps: true }

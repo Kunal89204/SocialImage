@@ -5,12 +5,12 @@ const likeSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "users",
       required: true,
     },
     postId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
+      ref: "posts",
       required: true,
     },
     createdAt: {
@@ -21,7 +21,8 @@ const likeSchema = new mongoose.Schema(
 );
 
 // Index for efficient querying
-likeSchema.index({ user: 1, post: 1 });
+likeSchema.index({ userId: 1, postId: 1 });
+
 
 // Define a model for likes using the schema
 const Like = mongoose.model("Like", likeSchema);

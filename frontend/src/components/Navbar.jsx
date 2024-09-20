@@ -1,92 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from 'react'
+import { CiSearch } from "react-icons/ci";
+import { IoAdd } from "react-icons/io5";
+import { Link } from 'react-router-dom';
+import { useAuthStore } from '../context/store';
+
+
+
 
 const Navbar = () => {
-  const [modal, setModal] = useState(false);
-  const [userData, setUserData] = useState("");
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const { user, logout } = useAuthStore()
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const [profile, setProfile] = useState(
-    "https://cdn-icons-png.flaticon.com/512/10337/10337609.png"
-  );
+  const handleLogout = () => {
+    console.log('logout clicked')
+    logout()
+  }
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/user/userinfoid/${userId}`)
-      .then((response) => {
-        setProfile(`http://localhost:3000/uploads/${response.data.profileImg}`);
-        setUserData(response.data);
-      });
-  }, [userId]);
-
-  const modalDisplay = () => {
-    setModal(!modal);
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
-
   return (
-    <div className="flex justify-between p-2 bg-gray-100">
-      <nav className="flex gap-10">
-        <Link to={"/"}>
-          <li className="py-2 px-4 rounded-lg hover:bg-gray-300 border border-gray-100 hover:border-gray-300">
-            Home
-          </li>
-        </Link>
-        <Link to={"/post"}>
-          <li className="py-2 px-4 rounded-lg hover:bg-gray-300 border border-gray-100 hover:border-gray-300">
-            Posts
-          </li>
-        </Link>
-        <Link to={"/explore"}>
-          <li className="py-2 px-4 rounded-lg hover:bg-gray-300 border border-gray-100 hover:border-gray-300">
-            Explore
-          </li>
-        </Link>
-        <Link to={`/chats/${userData.username}`}>
-          <li className="py-2 px-4 rounded-lg hover:bg-gray-300 border border-gray-100 hover:border-gray-300">
-            Chats
-          </li>
-        </Link>
-      </nav>
-      <div className="cursor-pointer" onClick={modalDisplay}>
-        <img src={profile} alt="" className="w-10 rounded-full h-10" />
-        {modal && <Dropdown />}
+    <div className='flex justify-between text-xl  p-2 bg-black text-white sticky top-0'>
+
+
+      <div className=' w-1/3 m-auto relative'><input type="text" placeholder='Search' className='bg-[#272727] px-2 w-full m-auto rounded py-1 ' />
+        <CiSearch className='absolute bottom-1/2 translate-y-1/2  right-2 ' /></div>
+
+      <div className='flex gap-2'>
+        <button className='flex items-center border-transparent hover:bg-gray-900 pr-4 pb-1 pl-1 rounded-full text-gray-300 '><IoAdd /><Link to={'/createpost'}>Create</Link></button>
+        <div className='w-10'>
+          <button
+            onClick={toggleDropdown}
+            className="text-white    rounded-lg text-xl  text-center inline-flex items-center "
+          >
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" className='rounded-full' alt="" />
+          </button>
+
+          {dropdownOpen && (
+            <div className="absolute right-5 z-10 bg-black border border-gray-700 divide-y divide-gray-100 rounded-lg shadow w-44 ">
+              <ul className="px-2 text-sm flex flex-col text-gray-300 ">
+                <Link to={`/profile/${user.user.username}`} className='text-center text-lg py-2'>Profile</Link>
+                <Link className='text-center text-lg py-2 border-y border-gray-600'>Settings</Link>
+                <button onClick={
+                  handleLogout
+                }><Link className='text-center text-lg py-2' >Logout</Link></button>
+              </ul>
+            </div>
+          )}
+
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-const Dropdown = () => {
-  const [userData, setUserData] = useState("");
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
-  const navigate = useNavigate();
-
-  const logOut = () => {
-    localStorage.removeItem("userId");
-    navigate("/");
-  };
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/user/userinfoid/${userId}`)
-      .then((response) => {
-        setUserData(response.data.username);
-      });
-  }, [userId]);
-
-  return (
-    <>
-      <div className="rounded shadow-2xl absolute right-10 top-10 bg-white z-10">
-        <div className="py-2 px-4">
-          <Link to={`/profile/${userData}`}>My Profile</Link>
-        </div>
-
-        <div className="py-2 px-4" onClick={logOut}>
-          Logout
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Navbar;
+export default Navbar

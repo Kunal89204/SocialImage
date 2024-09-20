@@ -1,2 +1,0 @@
-# SocialImage
-Practicing Social Media
