@@ -16,10 +16,6 @@ const postSchema = new mongoose.Schema(
             type: String,
         },
 
-        videoUrl: {
-            type: String
-        },
-
         description: {
             type: String,
         },

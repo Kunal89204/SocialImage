@@ -28,7 +28,7 @@ const follow = async (req, res) => {
         // If not following, follow
         const follow = await Follow.create({ follower: followerId, user: userId });
 
-        res.status(201).json({ message: `Started following user ${username}`, follow });
+        res.status(201).json({ message: `Request sent to ${username}`, follow });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -52,8 +52,36 @@ const followersCount = async (req, res) => {
 const followers = async (req, res) => {
     try {
         const userId = req.params.id;
-        const followers = await Follow.find({ user: userId }).populate('follower', '-password');
-        res.json(followers.map(follower => follower))
+        // const followers = await Follow.find({ user: userId }).populate('follower', '-password');
+        const followers = await Follow.aggregate([
+            {
+                $match:{
+                    "follower": new mongoose.Types.ObjectId(userId)
+                }
+            },
+            {
+                $lookup:{
+                    from:'users',
+                    localField:'user',
+                    foreignField:'_id',
+                    as:'user'
+                }
+            },
+            {
+                $unwind: '$user'
+            },
+            {
+                $project:{
+                    '_id':1,
+                    'user._id':1,
+                    'user.username':1,
+                    'user.profileImg':1,
+                    'user.fullName':1,
+                    'isAccepted':1
+                }
+            }
+        ])
+        res.json(followers)
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -117,10 +145,55 @@ const followInfo = async (req, res) => {
     }
 }
 
+const acceptRequest = async (req, res) => {
+    try {
+        const { acceptorId, requestorId } = req.body;
+
+        // Update the `isAccepted` field to `true`
+        const response = await Follow.findOneAndUpdate(
+            {
+                follower: new mongoose.Types.ObjectId(requestorId),
+                user: new mongoose.Types.ObjectId(acceptorId)
+            },
+            {
+                $set: { isAccepted: true } // Set isAccepted to true
+            },
+            {
+                new: true // Return the updated document
+            }
+        );
+
+        // If no document is found
+        if (!response) {
+            return res.status(404).json({
+                status: "error",
+                message: "Follow request not found"
+            });
+        }
+
+        // Return the updated document in a standardized response
+        return res.json({
+            status: "success",
+            message: "Follow request accepted",
+            data: response
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            status: "error",
+            message: "An error occurred while accepting the request",
+            error: error.message
+        });
+    }
+};
+
+
 module.exports = {
     follow,
     followersCount,
     followers,
     followInfo,
-    getFollowStatus
+    getFollowStatus,
+    acceptRequest
 }

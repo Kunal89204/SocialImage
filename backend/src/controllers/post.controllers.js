@@ -124,6 +124,7 @@ const addPost = async (req, res) => {
     }
 };
 
+
 const deletePost = async (req, res) => {
     try {
         const id = req.params.postId;
@@ -288,6 +289,16 @@ const getAllPost = async (req, res) => {
     }
 }
 
+
+
+const newPost = async (req, res) => {
+    try {
+        res.json({files:req.files,data:req.body})
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
 module.exports = {
     getAllPosts,
     addPost,
@@ -295,5 +306,6 @@ module.exports = {
     getUserPost,
     getPost,
     editPost,
-    getAllPost
+    getAllPost,
+    newPost
 }

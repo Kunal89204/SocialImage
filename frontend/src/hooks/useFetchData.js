@@ -163,7 +163,23 @@ const fetchData = {
             console.log(error)
             return error
         }
+    },
+
+    getfollowers: async (accessToken, userId) => {
+        try {
+            const response = await axios.get(`${baseUrl}/followers/${userId}`, {
+                headers:{
+                    Authorization: ` Bearer ${accessToken}`
+                }
+            })
+            return response.data
+        } catch (error) {
+            console.log(error)
+            return error
+        }
     }
+
+
 }
 
 
