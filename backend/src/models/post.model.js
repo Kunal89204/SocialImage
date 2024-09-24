@@ -12,9 +12,9 @@ const postSchema = new mongoose.Schema(
             required: true
         },
 
-        imgUrl: {
-            type: String,
-        },
+        media: [{
+            mediaUrl: String
+        }],
 
         description: {
             type: String,

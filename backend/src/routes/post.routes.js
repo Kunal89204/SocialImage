@@ -12,13 +12,17 @@ router.put('/editPost/:id', requireAuth, editPost)
 router.delete('/deletePost/:postId', requireAuth, deletePost)
 router.post('/addpost/:userId', upload.single("post"), addPost)
 
-router.post('/newPost/:userId', upload.fields([{
+
+router.post('/newPost', upload.fields([
+  {
     name: 'post',
-    maxCount: 10
-}, {
+    maxCount: 10 // Maximum of 10 posts (images)
+  }, 
+  {
     name: 'video',
-    maxCount: 10
-}]), newPost)
+    maxCount: 5 // Maximum of 5 videos
+  }
+]), newPost);
 
 router.get('/getallpost', getAllPost)
 

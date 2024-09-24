@@ -124,7 +124,6 @@ const addPost = async (req, res) => {
     }
 };
 
-
 const deletePost = async (req, res) => {
     try {
         const id = req.params.postId;
@@ -171,41 +170,41 @@ const getUserPost = async (req, res) => {
 const getPost = async (req, res) => {
     try {
         const postId = req.params.postId
-       
-        
-        
+
+
+
         const postData = await Post.aggregate([
             {
-                $match:{
+                $match: {
                     _id: new mongoose.Types.ObjectId(postId)
                 },
-                
+
             },
             {
-                $lookup:{
-                    from:'users',
-                    localField:'userId',
-                    foreignField:'_id',
-                    as:'userId'
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'userId'
                 },
-                
+
             },
             {
-                $unwind:'$userId'
+                $unwind: '$userId'
             },
             {
-                $project:{
-                    _id:1,
-                    title:1,
-                    imgUrl:1,
-                    description:1,
-                    isPublic:true,
-                    createdAt:1,
-                    updatedAt:1,
-                    'userId._id':1,
-                    'userId.username':1,
-                    'userId.fullName':1,
-                    'userId.profileImg':1,
+                $project: {
+                    _id: 1,
+                    title: 1,
+                    imgUrl: 1,
+                    description: 1,
+                    isPublic: true,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    'userId._id': 1,
+                    'userId.username': 1,
+                    'userId.fullName': 1,
+                    'userId.profileImg': 1,
 
                 }
             }
@@ -229,7 +228,7 @@ const editPost = async (req, res) => {
 
 const getAllPost = async (req, res) => {
     try {
-  
+
         const allPosts = await Post.aggregate([
             {
                 $lookup: {
@@ -279,7 +278,7 @@ const getAllPost = async (req, res) => {
 
                 }
             },
-            
+
         ]);
 
 
@@ -293,12 +292,79 @@ const getAllPost = async (req, res) => {
 
 const newPost = async (req, res) => {
     try {
-        res.json({files:req.files,data:req.body})
+        const { video = [], post = [] } = req.files; // Default to empty arrays if no files are uploaded
+        const { title, description, userId, isPublic } = req.body;
+
+        // Validate required fields
+        if (!title || !description || !userId) {
+            return res.status(400).json({
+                success: false,
+                message: "Title, description, and user ID are required."
+            });
+        }
+
+
+
+
+        // Upload videos and posts concurrently using Promise.all
+        const uploadPromises = [
+            ...video.map(vdo => uploadOnCloudinary(vdo.path).catch(err => {
+                console.error(`Error uploading video ${vdo.originalname}:`, err);
+                return null; // Return null if upload fails
+            })),
+            ...post.map(img => uploadOnCloudinary(img.path).catch(err => {
+                console.error(`Error uploading image ${img.originalname}:`, err);
+                return null; // Return null if upload fails
+            }))
+        ];
+
+        // Wait for all uploads to complete
+        const urls = await Promise.all(uploadPromises);
+
+        // Filter out any failed uploads
+        const mediaUrls = urls.filter(url => url); // Remove null values
+
+        // Check if any media was uploaded
+        if (mediaUrls.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No valid media files were uploaded."
+            });
+        }
+
+        // Create the post in the database
+        const newPost = await Post.create({
+            userId,
+            title,
+            media: mediaUrls.map((url) => ({ mediaUrl: url.url })), // Insert as objects with mediaUrl key
+            description,
+            isPublic
+        });
+
+
+        // Send successful response
+        res.status(201).json({
+            success: true,
+            message: "Post created successfully.",
+            newPost
+        });
+
+
+
     } catch (error) {
-        console.log(error)
-        return error
+        // Log the error for debugging
+        console.error("Error during file upload:", error);
+
+        // Send a response with status 500 and an error message
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while creating the post. Please try again later."
+        });
     }
-}
+};
+
+
+
 module.exports = {
     getAllPosts,
     addPost,
