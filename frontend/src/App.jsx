@@ -13,6 +13,8 @@ import Stepper from './pages/Stepper';
 import Explore from './pages/Explore';
 import Post from './pages/Post';
 import Requests from './pages/Requests';
+import CreatePost2 from './pages/CreatePost2';
+
 
 
 
@@ -30,6 +32,7 @@ const App = () => {
         <Route path="/" element={<ProtectedRoute><Layout><Home /></Layout></ProtectedRoute>} />
         <Route path="/:username" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
         <Route path="/createpost" element={<ProtectedRoute><Layout><CreatePost /></Layout></ProtectedRoute>} />
+        <Route path="/createpost2" element={<ProtectedRoute><Layout><CreatePost2 /></Layout></ProtectedRoute>} />
         <Route path="/explore" element={<ProtectedRoute><Layout><Explore /></Layout></ProtectedRoute>} />
         <Route path="/requests" element={<ProtectedRoute><Layout><Requests /></Layout></ProtectedRoute>} />
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />

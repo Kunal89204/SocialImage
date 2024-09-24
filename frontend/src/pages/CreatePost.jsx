@@ -36,13 +36,12 @@ const CreatePost = () => {
     }
 
     const postPromise = axios.post(`${import.meta.env.VITE_BACKEND_URL}/addpost/${user.user._id}`, data)
-
+    
     toast.promise(postPromise, {
       loading: { title: 'Uploading', description: 'Please wait while the post is uploading' },
       success: { title: 'Post Uploaded', description: 'Post has been uploaded successfully.' },
       error: { title: 'Error', description: 'There was an error uploading the post.' },
     })
-
     postPromise
       .then((respo) => {
         console.log(respo.data);
@@ -51,11 +50,7 @@ const CreatePost = () => {
       .catch((error) => {
         console.log(error);
       });
-
-
   };
-
-
 
   const toggleIsPublic = () => {
     setIsPublic((prev) => !prev);
@@ -65,11 +60,6 @@ const CreatePost = () => {
 
   return (
     <div className="min-h-screen text-white flex items-center">
-
-
-
-
-
 
       <div className="w-full max-w-2xl p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6">Create Post</h2>
