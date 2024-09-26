@@ -227,7 +227,7 @@ const CreatePost2 = () => {
                     </div>
                 ))}
             </div>
-
+            
             <button onClick={handlePost}>Upload</button>
         </div>
     );

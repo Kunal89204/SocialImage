@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import useLogin from '../hooks/useLogin';
-import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle, AlertDescription, Button, FormControl, FormLabel, Input, Box, Heading, Text, VStack, Link as ChakraLink } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-
 
 const Login = () => {
     const { loginHook } = useLogin();
@@ -28,35 +27,42 @@ const Login = () => {
     };
 
     return (
-        <div className='h-screen w-screen flex justify-center bg-[#111827] text-[#A8A8A8] items-center'>
-            {alert && <div className="absolute top-10">
-                <Alert status='error'>
+        <Box className="h-screen w-screen flex justify-center items-center bg-[#111827]" color="gray.200">
+            {alert && (
+                <Alert status='error' variant='subtle' position="absolute" top="5" w="auto" maxW="sm">
                     <AlertIcon />
-                    <AlertTitle>{alertMessage}</AlertTitle>
-                    <AlertDescription>{alertMessage === "User doesn't exist" ? "Please register" : "Please enter correct credentials"}</AlertDescription>
+                    <VStack align="start">
+                        <AlertTitle>{alertMessage}</AlertTitle>
+                        <AlertDescription>
+                            {alertMessage === "User doesn't exist" ? "Please register" : "Please enter correct credentials"}
+                        </AlertDescription>
+                    </VStack>
                 </Alert>
-            </div>}
-            <div className=''>
-                <h1 className='text-6xl text-center mb-10'>Social Image</h1>
-                <div className='bg-[#142A3A] p-10 rounded-2xl'>
-                    <h2 className='text-center text-4xl pb-4'>Login</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className='flex flex-col gap-2 py-3'>
-                            <label htmlFor="username">Username</label>
-                            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='border border-gray-700 bg-[#111827] rounded-lg outline-none focus:border-black p-2' />
-                        </div>
-                        <div className='flex flex-col gap-2 py-3'>
-                            <label htmlFor="password">Password</label>
-                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className='border border-gray-700 bg-[#111827] rounded-lg outline-none focus:border-black p-2' />
-                        </div>
-                        <div className='text-end pt-2'>
-                            <button className='border border-gray-700 py-2 px-10 rounded-lg bg-[#111827] hover:bg-gray-950 transition-all duration-300' type="submit">Login</button>
-                        </div>
-                    </form>
-                    <p>Don't Have an account <Link to={'/register'}>Register</Link></p>
-                </div>
-            </div>
-        </div>
+            )}
+            <Box w="full" maxW="md" bg="#1A202C" p={8} rounded="lg" boxShadow="2xl">
+                <Heading textAlign="center" mb={6} fontSize="3xl">Social Image</Heading>
+                <Heading textAlign="center" mb={8} fontSize="2xl" fontWeight="medium">Login</Heading>
+                <form onSubmit={handleSubmit}>
+                    <VStack spacing={4}>
+                        <FormControl id="username">
+                            <FormLabel>Username</FormLabel>
+                            <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)} bg="#2D3748" border="1px solid" borderColor="gray.600" _hover={{ borderColor: "gray.400" }} _focus={{ borderColor: "cyan.400", boxShadow: "0 0 0 1px cyan.400" }} />
+                        </FormControl>
+                        <FormControl id="password">
+                            <FormLabel>Password</FormLabel>
+                            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} bg="#2D3748" border="1px solid" borderColor="gray.600" _hover={{ borderColor: "gray.400" }} _focus={{ borderColor: "cyan.400", boxShadow: "0 0 0 1px cyan.400" }} />
+                        </FormControl>
+                        <Button type="submit" bg="cyan.600" color="white" w="full" mt={4} _hover={{ bg: "cyan.500" }} transition="all 0.2s">Login</Button>
+                    </VStack>
+                </form>
+                <Text mt={6} textAlign="center">
+                    Don't have an account?{' '}
+                    <ChakraLink as={Link} to="/register" color="cyan.400" _hover={{ textDecoration: "underline" }}>
+                        Register
+                    </ChakraLink>
+                </Text>
+            </Box>
+        </Box>
     );
 };
 
