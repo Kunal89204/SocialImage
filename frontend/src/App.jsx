@@ -14,6 +14,7 @@ import Explore from './pages/Explore';
 import Post from './pages/Post';
 import Requests from './pages/Requests';
 import CreatePost2 from './pages/CreatePost2';
+import Messages from './pages/Messages';
 
 
 
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/createpost" element={<ProtectedRoute><Layout><CreatePost /></Layout></ProtectedRoute>} />
         <Route path="/createpost2" element={<ProtectedRoute><Layout><CreatePost2 /></Layout></ProtectedRoute>} />
         <Route path="/explore" element={<ProtectedRoute><Layout><Explore /></Layout></ProtectedRoute>} />
+        <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} />
         <Route path="/requests" element={<ProtectedRoute><Layout><Requests /></Layout></ProtectedRoute>} />
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
         <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
