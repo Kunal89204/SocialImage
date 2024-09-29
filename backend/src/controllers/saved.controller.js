@@ -40,13 +40,31 @@ const savePost = async (req, res) => {
 
 const getUserSavedPost = async (req, res) => {
     try {
-        const {userId}  = req.params;
-        const savedPosts = await Saved.findOne({userId})
-        res.json(savedPosts)
+        const { userId } = req.params;
+        const savedPosts = await Saved.findOne({ userId });
+
+        if (!savedPosts) {
+            return res.status(404).json({
+                success: false,
+                message: "No saved posts found for this user.",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: savedPosts,
+            message: "User saved posts retrieved successfully.",
+        });
     } catch (error) {
-        console.log(error)
+        console.error("Error retrieving user saved posts:", error);
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while retrieving saved posts.",
+            error: error.message,
+        });
     }
-}
+};
+
 
 module.exports = {
     savePost,
