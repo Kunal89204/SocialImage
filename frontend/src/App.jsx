@@ -15,6 +15,8 @@ import Post from './pages/Post';
 import Requests from './pages/Requests';
 import CreatePost2 from './pages/CreatePost2';
 import Messages from './pages/Messages';
+import Saved from './pages/Saved';
+
 
 
 
@@ -34,6 +36,7 @@ const App = () => {
         <Route path="/:username" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
         <Route path="/createpost" element={<ProtectedRoute><Layout><CreatePost /></Layout></ProtectedRoute>} />
         <Route path="/createpost2" element={<ProtectedRoute><Layout><CreatePost2 /></Layout></ProtectedRoute>} />
+        <Route path="/saved" element={<ProtectedRoute><Layout><Saved /></Layout></ProtectedRoute>} />
         <Route path="/explore" element={<ProtectedRoute><Layout><Explore /></Layout></ProtectedRoute>} />
         <Route path="/messages" element={<ProtectedRoute><Layout><Messages /></Layout></ProtectedRoute>} />
         <Route path="/requests" element={<ProtectedRoute><Layout><Requests /></Layout></ProtectedRoute>} />

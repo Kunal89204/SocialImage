@@ -5,6 +5,8 @@ import { MdEdit } from 'react-icons/md';
 import EditProfileModal from '../components/EditProfileModal';
 import axios from 'axios';
 import { useAuthStore } from '../context/store';
+import { FaInstagram, FaLinkedin, FaTwitter  } from "react-icons/fa";
+
 
 const Profile = () => {
   const { username } = useParams();
@@ -106,6 +108,40 @@ const Profile = () => {
                   Edit Profile
                 </Button>
               )}
+            </div>
+            <div className='px-4'>
+             <div className='flex w-10/12  justify-between'>
+              <div>
+              <div>1</div>
+              <div>Followers</div>
+
+              </div>
+              <div>
+              <div>1</div>
+              <div>Followers</div>
+
+              </div>
+             </div>
+             <div className='flex w-10/12  justify-between'>
+              <div>
+              <div>8, Sep</div>
+              <div>B'day</div>
+
+              </div>
+              <div>
+              <div>1</div>
+              <div>Followers</div>
+
+              </div>
+             </div>
+             <div className='py-2'>
+              <h5>Socials</h5>
+              <div className='flex gap-2'>
+                <Link to={'/instagram'}><FaInstagram className='text-2xl' /></Link>
+                <Link to={'/twiiter'}><FaTwitter className='text-2xl' /></Link>
+                <Link to={'/twiiter'}><FaLinkedin className='text-2xl' /></Link>
+              </div>
+             </div>
             </div>
           </div>
         </div>
