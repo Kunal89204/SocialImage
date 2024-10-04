@@ -59,7 +59,7 @@ const Home = () => {
         ))}
       </div>
       <div className='w-[36%] p-2 mb-5  rounded-lg'>
-        <div className=' border border-gray-700  px-2 rounded-xl'>
+        <div className=' border border-gray-700 custom-bg-gradient px-2 rounded-xl'>
           <h3 className='py-2 font-semibold text-lg'>Recent Posts</h3>
           <div>
             <div className='flex my-2 rounded-xl p-1'>
@@ -82,7 +82,7 @@ const Home = () => {
         </div>
 
 
-        <div className='mt-5 border border-gray-700  px-2 rounded-xl'>
+        <div className='mt-5 border border-gray-700 custom-bg-gradient  px-2 rounded-xl'>
           <h3 className='py-2 font-semibold text-lg'>People to Follow</h3>
 
           <div>

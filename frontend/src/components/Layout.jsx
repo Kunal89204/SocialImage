@@ -27,12 +27,12 @@ const Layout = ({ children }) => {
         flex items-center justify-between border-b fixed top-0 w-full border-b-gray-600 p-2 bg-black  z-10'>
         <div><Link to={'/'}>SocialImage</Link></div>
         <div className='flex items-center relative w-1/4'>
-          <input type="text" className='bg-gray-900 rounded-full w-full p-2' placeholder='Search...' />
+          <input type="text" className='custom-bg-gradient border-1 border-gray-600 focus:border-gray-400 focus:outline-none rounded-full w-full p-2' placeholder='Search...' />
           <CiSearch className='text-2xl absolute right-2' />
         </div>
         <div className='flex gap-4 items-center'>
           <Link to={'/requests'} className='relative'><FaUserFriends className='text-xl ' /><span className='absolute -top-1  text-white border-gray-600 border rounded-full aspect-square h-4 bg-black w-4 text-xs flex items-center justify-center -right-2'>{followRequests.length}</span></Link>
-          <Link to={'/createpost'}><button className='bg-gray-900 py-2 px-6 rounded-full flex items-center'>+ Create</button></Link>
+          <Link to={'/createpost'}><button className='custom-btn-gradient py-2 px-6 rounded-full flex items-center'>+ Create</button></Link>
           <Menu>
             <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
               <Avatar
@@ -42,15 +42,15 @@ const Layout = ({ children }) => {
                 src={user?.user?.profileImg}
               />
             </MenuButton>
-            <MenuList bg={'black'} >
-              <Link to={`/${user?.user?.username}`}><MenuItem fontSize={'20px'} paddingRight={'20px'} backgroundColor={'rgb(31 41 55)'}>Profile</MenuItem></Link>
-              <MenuItem fontSize={'20px'} paddingRight={'20px'} backgroundColor={'rgb(31 41 50)'} onClick={logout}>Logout</MenuItem>
+            <MenuList bg={'gray.900'} borderColor={'gray.600'} >
+              <Link to={`/${user?.user?.username}`}><MenuItem fontSize={'20px'} paddingRight={'20px'} backgroundColor={'transparent'}>Profile</MenuItem></Link>
+              <MenuItem fontSize={'20px'} paddingRight={'20px'} backgroundColor={'transparent'} onClick={logout}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
       </div>
 
-      <div className='h-full fixed left-0 flex flex-col justify-between pb-16 pt-4 top-[58px] bottom-0 border-r border-gray-600'>
+      <div className='h-full fixed left-0 flex flex-col justify-between pb-16 pt-4 top-[58px] bottom-0 border-r border-gray-600 custom-bg-gradient'>
         <nav className='flex flex-col  w-56 '>
           <Link className='p-4 hover:bg-gray-800 flex items-center gap-2' to="/"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-home"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>  Home</Link>
           <Link className='p-4 hover:bg-gray-800 flex items-center gap-2' to="/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-chart-bar-popular"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M9 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M15 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /><path d="M4 20h14" /></svg>Popular</Link>

@@ -3,6 +3,18 @@ import axios from 'axios'; // Import Axios
 import { useToast } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
+import { 
+    Box, 
+    Button, 
+    FormControl, 
+    FormLabel, 
+    Input, 
+    Image, 
+    Text, 
+    Stack 
+  } from '@chakra-ui/react';
+
+  
 
 const CreatePost2 = () => {
     const [title, setTitle] = useState("");
@@ -176,61 +188,68 @@ const CreatePost2 = () => {
     };
 
     return (
-        <div>
-            <div>
-                <label>Title</label>
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-            </div>
-
-            <div>
-                <label>Description</label>
-                <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                />
-            </div>
-
-            <label htmlFor="files">Click to upload files</label>
-            <input 
-                type="file" 
-                multiple 
-                accept="image/*,video/*" 
-                onChange={handleFileChange} 
-                id="files"
-                hidden={true}
+        <Box p={4}>
+          <Text fontSize="3xl" mb={4}>Create Post</Text>
+      
+          <FormControl mb={4} isRequired>
+            <FormLabel>Title</FormLabel>
+            <Input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              borderColor={'gray.600'}
             />
-
-            <div className="preview-container">
-                {previews.map((file, index) => (
-                    <div key={index} style={{ position: 'relative', display: 'inline-block', margin: '10px' }}>
-                        {file.type === 'image' ? (
-                            <img src={file.url} alt={`preview ${index}`} width="150px" />
-                        ) : (
-                            <video src={file.url} controls width="350px" />
-                        )}
-                        <IconButton
-                            size="sm"
-                            icon={<CloseIcon />}
-                            position="absolute"
-                            top="0"
-                            right="0"
-                            onClick={() => handleRemovePreview(index)}
-                            aria-label="Remove media"
-                        />
-                    </div>
-                ))}
-            </div>
-            
-            <button onClick={handlePost}>Upload</button>
-        </div>
-    );
+          </FormControl>
+      
+          <FormControl mb={4} isRequired>
+            <FormLabel>Description</FormLabel>
+            <Input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              borderColor={'gray.600'}
+            />
+          </FormControl>
+      
+          <FormLabel htmlFor="files" cursor="pointer" className='' borderColor={'gray.700'} borderWidth={'1px'} borderRadius={'md'} padding={'10'} border={'dashed'}>
+            Click to upload files
+          </FormLabel>
+          <Input
+            type="file"
+            multiple
+            accept="image/*,video/*"
+            onChange={handleFileChange}
+            id="files"
+            display="none"
+          />
+      
+          <Stack direction="row" spacing={4} wrap="wrap" className="preview-container">
+            {previews.map((file, index) => (
+              <Box key={index} position="relative">
+                {file.type === 'image' ? (
+                  <Image src={file.url} alt={`preview ${index}`} boxSize="150px" objectFit="cover" />
+                ) : (
+                  <video src={file.url} controls width="350px" />
+                )}
+                <IconButton
+                  size="sm"
+                  icon={<CloseIcon />}
+                  position="absolute"
+                  top="0"
+                  right="0"
+                  onClick={() => handleRemovePreview(index)}
+                  aria-label="Remove media"
+                />
+              </Box>
+            ))}
+          </Stack>
+      
+          <Button colorScheme="blue" mt={4} onClick={handlePost}>
+            Upload
+          </Button>
+        </Box>
+      );
+      
 };
 
 export default CreatePost2;

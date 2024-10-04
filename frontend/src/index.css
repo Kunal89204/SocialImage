@@ -7,4 +7,15 @@
 
 *{
     /* overflow-x: hidden; */
+    outline: none;
 }
+
+
+.custom-bg-gradient {
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0), rgba(255,255,255,0.05));
+  }
+
+.custom-btn-gradient {
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.11), rgba(255,255,255,0.05));
+  }
+  

@@ -131,7 +131,7 @@ const Post = () => {
   };
 
   return (
-    <div className='flex'>
+    <div className='flex '>
       <div className='w-2/3'>
 
 
@@ -147,7 +147,7 @@ const Post = () => {
           <Skeleton height={'10px'} width={'250px'} />
           <Skeleton height={'350px'} width={'full'} rounded={'10px'} />
 
-        </Stack> : <div>
+        </Stack> : <div className=''>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-5'>
               <div><Link to={'/'}><FaArrowLeft /></Link></div>
@@ -228,7 +228,7 @@ const Post = () => {
                       </MenuButton>
                       <MenuList bg={'black'} borderColor={'gray.700'} p={0}>
                         <MenuItem bg={'black'} rounded={'lg'}>Report</MenuItem>
-                        {c?.user?._id == user?.user?._id && <MenuItem bg={'black'} rounded={'lg'}   onClick={() => handleCommentDelete(c?._id)}>Delete</MenuItem>}
+                        {c?.user?._id == user?.user?._id && <MenuItem bg={'black'} rounded={'lg'} onClick={() => handleCommentDelete(c?._id)}>Delete</MenuItem>}
                       </MenuList>
                     </Menu>
                   </div>
