@@ -177,7 +177,27 @@ const fetchData = {
             console.log(error)
             return error
         }
+    },
+
+    acceptRequest: async (accessToken, acceptorId, requestorId) => {
+        try {
+            const response = await axios.put(`${baseUrl}/acceptrequest`, {
+                acceptorId,    // Include acceptorId directly in the request body
+                requestorId    // Include requestorId directly in the request body
+            }, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}` // Headers should be in the second argument
+                }
+            });
+    
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error; // Consider throwing the error or handling it more gracefully
+        }
     }
+    
+        
 
 
 }

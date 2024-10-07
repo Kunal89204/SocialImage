@@ -41,6 +41,10 @@ const FollowButton = ({ username, personId }) => {
       .finally(() => {
         setLoading(false);
       });
+
+
+
+
   }
 
   return (

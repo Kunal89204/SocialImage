@@ -56,27 +56,28 @@ const followers = async (req, res) => {
         const followers = await Follow.aggregate([
             {
                 $match:{
-                    "follower": new mongoose.Types.ObjectId(userId)
+                    "user": new mongoose.Types.ObjectId(userId),
+                    "isAccepted": false
                 }
             },
             {
                 $lookup:{
                     from:'users',
-                    localField:'user',
+                    localField:'follower',
                     foreignField:'_id',
-                    as:'user'
+                    as:'follower'
                 }
             },
             {
-                $unwind: '$user'
+                $unwind: '$follower'
             },
             {
                 $project:{
                     '_id':1,
-                    'user._id':1,
-                    'user.username':1,
-                    'user.profileImg':1,
-                    'user.fullName':1,
+                    'follower._id':1,
+                    'follower.username':1,
+                    'follower.profileImg':1,
+                    'follower.fullName':1,
                     'isAccepted':1
                 }
             }
