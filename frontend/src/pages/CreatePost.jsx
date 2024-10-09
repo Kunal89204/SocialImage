@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
-import { useAuthStore } from '../context/store';
-import axios from 'axios';
-import { useToast } from '@chakra-ui/react';
-
-
-
+import React, { useState } from "react";
+import { useAuthStore } from "../context/store";
+import axios from "axios";
+import { useToast } from "@chakra-ui/react";
 
 const CreatePost = () => {
-  const { user } = useAuthStore()
+  const { user } = useAuthStore();
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
   const [isPublic, setIsPublic] = useState(true);
   // const [toast, setToast] = useState(false)
-  const toast = useToast()
-
+  const toast = useToast();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -28,24 +24,35 @@ const CreatePost = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append('title', title);
-    data.append('description', description);
-    data.append('isPublic', isPublic);
+    data.append("title", title);
+    data.append("description", description);
+    data.append("isPublic", isPublic);
     if (file) {
-      data.append('post', file);
+      data.append("post", file);
     }
 
-    const postPromise = axios.post(`${import.meta.env.VITE_BACKEND_URL}/addpost/${user.user._id}`, data)
-    
+    const postPromise = axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/addpost/${user.user._id}`,
+      data
+    );
+
     toast.promise(postPromise, {
-      loading: { title: 'Uploading', description: 'Please wait while the post is uploading' },
-      success: { title: 'Post Uploaded', description: 'Post has been uploaded successfully.' },
-      error: { title: 'Error', description: 'There was an error uploading the post.' },
-    })
+      loading: {
+        title: "Uploading",
+        description: "Please wait while the post is uploading",
+      },
+      success: {
+        title: "Post Uploaded",
+        description: "Post has been uploaded successfully.",
+      },
+      error: {
+        title: "Error",
+        description: "There was an error uploading the post.",
+      },
+    });
     postPromise
       .then((respo) => {
         console.log(respo.data);
-
       })
       .catch((error) => {
         console.log(error);
@@ -56,16 +63,16 @@ const CreatePost = () => {
     setIsPublic((prev) => !prev);
   };
 
-
-
   return (
     <div className="min-h-screen text-white flex items-center">
-
       <div className="w-full max-w-2xl p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6">Create Post</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-400">
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-400"
+            >
               Title
             </label>
             <input
@@ -131,7 +138,9 @@ const CreatePost = () => {
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    <p className="text-xs text-gray-500">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
                   </>
                 )}
               </div>
@@ -139,7 +148,10 @@ const CreatePost = () => {
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-400">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-400"
+            >
               Description
             </label>
             <textarea
@@ -153,18 +165,25 @@ const CreatePost = () => {
           </div>
 
           <div className="flex items-center">
-            <label htmlFor="isPublic" className="block text-sm font-medium text-gray-400 mr-4">
+            <label
+              htmlFor="isPublic"
+              className="block text-sm font-medium text-gray-400 mr-4"
+            >
               Public
             </label>
             <button
               type="button"
               onClick={toggleIsPublic}
-              className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors duration-200 focus:outline-none ${isPublic ? 'bg-white' : 'bg-gray-700'
-                }`}
+              className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors duration-200 focus:outline-none ${
+                isPublic ? "bg-white" : "bg-gray-700"
+              }`}
             >
               <span
-                className={`${isPublic ? 'translate-x-6 bg-gray-800' : 'translate-x-1 bg-white'
-                  } inline-block w-4 h-4 border  transform  rounded-full transition-transform duration-200`}
+                className={`${
+                  isPublic
+                    ? "translate-x-6 bg-gray-800"
+                    : "translate-x-1 bg-white"
+                } inline-block w-4 h-4 border  transform  rounded-full transition-transform duration-200`}
               />
             </button>
           </div>

@@ -11,7 +11,8 @@ import {
     Input, 
     Image, 
     Text, 
-    Stack 
+    Stack ,
+    Textarea
   } from '@chakra-ui/react';
 
   
@@ -187,6 +188,10 @@ const CreatePost2 = () => {
         }
     };
 
+    const toggleIsPublic = () => {
+      setIsPublic((prev) => !prev);
+    };
+
     return (
         <Box p={4}>
           <Text fontSize="3xl" mb={4}>Create Post</Text>
@@ -203,15 +208,31 @@ const CreatePost2 = () => {
       
           <FormControl mb={4} isRequired>
             <FormLabel>Description</FormLabel>
-            <Input
+            <Textarea
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               borderColor={'gray.600'}
             />
           </FormControl>
+          <div className="flex items-center my-6">
+            <label htmlFor="isPublic" className="block text-sm font-medium text-gray-400 mr-4">
+              Public
+            </label>
+            <button
+              type="button"
+              onClick={toggleIsPublic}
+              className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors duration-200 focus:outline-none ${isPublic ? 'bg-white' : 'bg-gray-700'
+                }`}
+            >
+              <span
+                className={`${isPublic ? 'translate-x-6 bg-gray-800' : 'translate-x-1 bg-white'
+                  } inline-block w-4 h-4 border  transform  rounded-full transition-transform duration-200`}
+              />
+            </button>
+          </div>
       
-          <FormLabel htmlFor="files" cursor="pointer" className='' borderColor={'gray.700'} borderWidth={'1px'} borderRadius={'md'} padding={'10'} border={'dashed'}>
+          <FormLabel htmlFor="files" cursor="pointer" className=''  borderWidth={'1px'} borderRadius={'md'} padding={'10'} border={'dashed'}>
             Click to upload files
           </FormLabel>
           <Input
@@ -244,9 +265,9 @@ const CreatePost2 = () => {
             ))}
           </Stack>
       
-          <Button colorScheme="blue" mt={4} onClick={handlePost}>
+          <button  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#161616] hover:bg-[#1b1b1b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black" onClick={handlePost}>
             Upload
-          </Button>
+          </button>
         </Box>
       );
       

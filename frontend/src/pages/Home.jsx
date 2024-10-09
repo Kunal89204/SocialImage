@@ -23,6 +23,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchPosts()
+    // console.log(posts)
   }, [user.user._id, user?.accessToken])
 
 
