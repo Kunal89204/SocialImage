@@ -21,8 +21,10 @@ const Home = () => {
     }
   }
 
+  
   useEffect(() => {
     fetchPosts()
+    console.log("I am posts", posts)
     // console.log(posts)
   }, [user.user._id, user?.accessToken])
 

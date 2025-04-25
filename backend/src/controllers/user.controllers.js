@@ -22,7 +22,13 @@ const registerUser = async (req, res) => {
         const { username, password, fullName } = req.body;
 
         if (!username || !password) {
-            return res.json({ message: "Fields can't be empty" });
+            // return res.json({ message: "Fields can't be empty" });
+            return res.json({
+                success:false,
+                status:401,
+                message:"Fields can't be empty"
+
+            })
         }
 
         const existingUser = await User.findOne({ username });

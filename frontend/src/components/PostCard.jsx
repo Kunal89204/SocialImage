@@ -16,6 +16,8 @@ const PostCard = ({ fullname, username, imgurl, title, body, postId, profileImg,
   const [totalLikes, setTotalLikes] = useState(0)
   const [savedPosts, setSavedPosts] = useState([])
 
+  console.log('i am profile img', profileImg)
+
   const fetchLikesForAPost = () => {
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/getLikesForAPost/${postId}`)
       .then((respo) => {
@@ -27,7 +29,7 @@ const PostCard = ({ fullname, username, imgurl, title, body, postId, profileImg,
 
   const getSavedpost = async () => {
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/getsavedpost/${user?.user?._id}`)
-      .then((respo) => setSavedPosts(respo.data.savedPosts.map((post) => post)))
+      .then((respo) => setSavedPosts(respo?.data?.savedPosts?.map((post) => post)))
       .catch((err) => {
         console.log(err, user.user._id)
       })
@@ -72,7 +74,7 @@ const PostCard = ({ fullname, username, imgurl, title, body, postId, profileImg,
 
 
   return (
-    <div className='hover:bg-gray-950 w-full border border-gray-700 rounded-xl shadow-md p-3'>
+    <div className='hover:bg-gray-950 w-full border border-gray-900 rounded-xl shadow-md p-3'>
       <div className='text-xl font-semibold flex justify-between items-center'>
         <div className='flex items-center gap-5'>
           <div className='w-10'>

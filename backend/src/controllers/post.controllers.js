@@ -95,6 +95,7 @@ const getAllPosts = async (req, res) => {
 }
 
 const addPost = async (req, res) => {
+    console.log('api has been hit')
     try {
         const userId = req.params.userId;
         const { title, description } = req.body;
@@ -104,6 +105,7 @@ const addPost = async (req, res) => {
             const filename = req.file.path;
             const img = await uploadOnCloudinary(filename);
             imgUrl = img.url;
+
         }
 
         const newPost = await Post.create({
