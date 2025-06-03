@@ -14,6 +14,7 @@ const Login = () => {
         e.preventDefault();
         const data = { username, password };
         const result = await loginHook(data);
+        console.log('I am result', result)
 
         if (result) {
             setAlertMessage(result);
@@ -32,8 +33,8 @@ const Login = () => {
                 <Alert status='error' variant='subtle' position="absolute" top="5" w="auto" maxW="sm">
                     <AlertIcon />
                     <VStack align="start">
-                        <AlertTitle>{alertMessage}</AlertTitle>
-                        <AlertDescription>
+                        <AlertTitle className='text-black'>{alertMessage}</AlertTitle>
+                        <AlertDescription className='text-black'>
                             {alertMessage === "User doesn't exist" ? "Please register" : "Please enter correct credentials"}
                         </AlertDescription>
                     </VStack>
@@ -50,7 +51,7 @@ const Login = () => {
                         </FormControl>
                         <FormControl id="password">
                             <FormLabel>Password</FormLabel>
-                            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className='custom-bg-gradient' border="1px solid" borderColor="#323232" _hover={{ borderColor: "gray.400" }} _focus={{ borderColor: "cyan.400", boxShadow: "0 0 0 1px cyan.400" }} />
+                            <Input type="text" value={password} onChange={(e) => setPassword(e.target.value)} className='custom-bg-gradient' border="1px solid" borderColor="#323232" _hover={{ borderColor: "gray.400" }} _focus={{ borderColor: "cyan.400", boxShadow: "0 0 0 1px cyan.400" }} />
                         </FormControl>
                         <Button type="submit" bg="#222222" color="white" w="full" mt={4} _hover={{ bg: "white", color: "black" }} transition="all 0.2s">Login</Button>
                     </VStack>

@@ -4,7 +4,7 @@ import { useAuthStore } from '../context/store'
 
 const ProtectedRoute = ({ children }) => {
     const { user } = useAuthStore()
-    if (!user || !user.accessToken) {
+    if (!user ) {
         // If no user or accessToken is found, redirect to login
         return <Navigate to="/login" />
     }

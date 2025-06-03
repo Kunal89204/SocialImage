@@ -95,53 +95,143 @@ const Profile = () => {
           </>
         )}
       </div>
-      <div className='w-1/3'>
-        <div className='sticky top-32 border border-gray-700 right-10 rounded-2xl overflow-hidden'>
-          <div>{loading ? <Skeleton startColor="gray.700"
-                endColor="gray.900" height={'150px'} maxHeight="182px" width="full" /> : <img src={userData.bannerImg} alt="" className='max-h-[182px] min-w-full' />}</div>
-          <div className='p-2'>
-            <div className='flex justify-between py-2'>
-              <div>{loading?<Skeleton height={'15px'} startColor="gray.700"
-                endColor="gray.900" width={'100px'}/>:userData.username}</div>
+      <div className="w-1/3 ">
+        <div className=" rounded-3xl fixed w-1/4 right-10 top-1/2 -translate-y-2/4 overflow-hidden shadow-2xl border border-gray-800 bg-gradient-to-br from-[#18181c] via-[#23232a] to-[#101014]">
+          {/* Banner */}
+          <div className="relative ">
+            {loading ? (
+              <Skeleton
+                startColor="gray.700"
+                endColor="gray.900"
+                height="160px"
+                width="full"
+                borderRadius="0"
+              />
+            ) : (
+              <img
+                src={userData.bannerImg}
+                alt="Banner"
+                className="w-full h-40 object-cover"
+                style={{ minHeight: 160, maxHeight: 182 }}
+              />
+            )}
+            {/* Avatar overlay */}
+            
+          </div>
+          {/* Card Content */}
+          <div className="pt-14 pb-4 px-6">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                {loading ? (
+                  <Skeleton
+                    height="18px"
+                    width="120px"
+                    startColor="gray.700"
+                    endColor="gray.900"
+                    borderRadius="md"
+                  />
+                ) : (
+                  <span className="text-lg font-semibold text-gray-100">
+                    @{userData.username}
+                  </span>
+                )}
+              </div>
               {isProfile && (
-                <Button onClick={() => setModalOpen(true)} colorScheme="teal" size="sm" rightIcon={<MdEdit />}>
-                  Edit Profile
+                <Button
+                  onClick={() => setModalOpen(true)}
+                  colorScheme="teal"
+                  size="sm"
+                  rightIcon={<MdEdit />}
+                  variant="outline"
+                  borderRadius="full"
+                  px={5}
+                  fontWeight="bold"
+                  _hover={{ bg: "teal.600", color: "white" }}
+                >
+                  Edit
                 </Button>
               )}
             </div>
-            <div className='px-4'>
-             <div className='flex w-10/12  justify-between'>
-              <div>
-              <div>1</div>
-              <div>Followers</div>
-
+            {/* Stats */}
+            <div className="flex justify-between items-center mt-4 mb-2">
+              <div className="flex flex-col items-center">
+                <span className="text-xl font-bold text-teal-400">
+                  {loading ? <Skeleton height="20px" width="30px" /> : userData.followers?.length ?? 0}
+                </span>
+                <span className="text-xs text-gray-400">Followers</span>
               </div>
-              <div>
-              <div>1</div>
-              <div>Followers</div>
-
+              <div className="flex flex-col items-center">
+                <span className="text-xl font-bold text-teal-400">
+                  {loading ? <Skeleton height="20px" width="30px" /> : userData.following?.length ?? 0}
+                </span>
+                <span className="text-xs text-gray-400">Following</span>
               </div>
-             </div>
-             <div className='flex w-10/12  justify-between'>
-              <div>
-              <div>8, Sep</div>
-              <div>B'day</div>
-
+              <div className="flex flex-col items-center">
+                <span className="text-xl font-bold text-teal-400">
+                  {loading ? <Skeleton height="20px" width="30px" /> : userData.postsCount ?? 0}
+                </span>
+                <span className="text-xs text-gray-400">Posts</span>
               </div>
-              <div>
-              <div>1</div>
-              <div>Followers</div>
-
+            </div>
+            {/* Birthday */}
+            <div className="flex items-center justify-center gap-2 mt-2 mb-4">
+              <span className="text-gray-400 text-sm">
+                <span className="font-semibold text-gray-300">🎂 B'day:</span>{" "}
+                {loading ? (
+                  <Skeleton height="16px" width="60px" />
+                ) : (
+                  userData.birthday
+                    ? new Date(userData.birthday).toLocaleDateString(undefined, {
+                        day: "numeric",
+                        month: "short",
+                      })
+                    : "Not set"
+                )}
+              </span>
+            </div>
+            {/* Socials */}
+            <div className="mt-4">
+              <h5 className="text-gray-300 font-semibold mb-2 text-sm tracking-wide">Socials</h5>
+              <div className="flex gap-4 justify-center">
+                {userData.socials?.instagram && (
+                  <a
+                    href={userData.socials.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-pink-400 transition"
+                  >
+                    <FaInstagram className="text-2xl" />
+                  </a>
+                )}
+                {userData.socials?.twitter && (
+                  <a
+                    href={userData.socials.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-sky-400 transition"
+                  >
+                    <FaTwitter className="text-2xl" />
+                  </a>
+                )}
+                {userData.socials?.linkedin && (
+                  <a
+                    href={userData.socials.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-blue-400 transition"
+                  >
+                    <FaLinkedin className="text-2xl" />
+                  </a>
+                )}
+                {/* Fallback icons if no socials */}
+                {!userData.socials && (
+                  <>
+                    <span className="opacity-40"><FaInstagram className="text-2xl" /></span>
+                    <span className="opacity-40"><FaTwitter className="text-2xl" /></span>
+                    <span className="opacity-40"><FaLinkedin className="text-2xl" /></span>
+                  </>
+                )}
               </div>
-             </div>
-             <div className='py-2'>
-              <h5>Socials</h5>
-              <div className='flex gap-2'>
-                <Link to={'/instagram'}><FaInstagram className='text-2xl' /></Link>
-                <Link to={'/twiiter'}><FaTwitter className='text-2xl' /></Link>
-                <Link to={'/twiiter'}><FaLinkedin className='text-2xl' /></Link>
-              </div>
-             </div>
             </div>
           </div>
         </div>

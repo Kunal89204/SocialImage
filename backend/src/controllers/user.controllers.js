@@ -21,150 +21,148 @@ const generateAccessAndRefreshTokens = async (userId) => {
 };
 
 const registerUser = async (req, res) => {
-    try {
-      const { username, password, fullName } = req.body;
-  
-      // Check for missing fields
-      if (!username || !password) {
-        return responseHandler(res, {
-          success: false,
-          status: 400, // Bad Request
-          message: "Username or Password is missing.",
-        });
-      }
-  
-      // Check if user already exists
-      const existingUser = await User.findOne({ username });
-      if (existingUser) {
-        return responseHandler(res, {
-          success: false,
-          status: 409, // Conflict
-          message: "Account already exists with this username.",
-        });
-      }
-  
-      // Create new user
-      const newUser = await User.create({ fullName, username, password });
-  
-      // Generate tokens
-      const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-        newUser._id
-      );
-  
-      // Save refresh token to user
-      newUser.refreshToken = refreshToken;
-      await newUser.save();
-  
-      // Set refresh token as httpOnly cookie
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        secure: true,
-        sameSite: "strict",
-      });
-  
-      // Prepare user object without sensitive fields
-      const userObject = newUser.toObject();
-      delete userObject.password;
-  
-      // Send success response
-      return responseHandler(res, {
-        success: true,
-        status: 201, // Created
-        message: "Account registered successfully.",
-        data: {
-          accessToken,
-          user: userObject,
-        },
-      });
-    } catch (error) {
-      console.error("Registration Error:", error);
-  
-      return responseHandler(res, {
-        success: false,
-        status: 500,
-        message: "Internal server error during registration.",
-        error: error.message || error,
-      });
-    }
-  };
-  
+  try {
+    const { username, password, fullName } = req.body;
 
-  const loginUser = async (req, res) => {
-    try {
-      const { username, password } = req.body;
-  
-      // Check for missing credentials
-      if (!username?.trim() || !password?.trim()) {
-        return responseHandler(res, {
-          success: false,
-          status: 400, // Bad Request
-          message: "Username and password are required.",
-        });
-      }
-  
-      // Check if user exists
-      const existingUser = await User.findOne({ username });
-      if (!existingUser) {
-        return responseHandler(res, {
-          success: false,
-          status: 404, // Not Found
-          message: "User does not exist.",
-        });
-      }
-  
-      // Validate password
-      const isPasswordValid = await existingUser.isPasswordCorrect(password);
-      if (!isPasswordValid) {
-        return responseHandler(res, {
-          success: false,
-          status: 401, // Unauthorized
-          message: "Invalid username or password.",
-        });
-      }
-  
-      // Generate tokens
-      const accessToken = existingUser.generateAccessToken();
-      const refreshToken = existingUser.generateRefreshToken();
-  
-      // Persist refresh token
-      existingUser.refreshToken = refreshToken;
-      await existingUser.save();
-  
-      // Set secure HTTP-only cookie
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        secure: true,
-        sameSite: "strict",
-      });
-  
-      // Prepare user object
-      const userObject = existingUser.toObject();
-      delete userObject.password;
-  
-      // Final response
-      return responseHandler(res, {
-        success: true,
-        status: 200,
-        message: "Login successful.",
-        data: {
-          accessToken,
-          user: userObject,
-        },
-      });
-    } catch (error) {
-      console.error("[LOGIN_USER_ERROR]", error);
-  
+    // Check for missing fields
+    if (!username || !password) {
       return responseHandler(res, {
         success: false,
-        status: 500,
-        message: "Internal server error during login.",
-        error: typeof error === "object" ? error.message : String(error),
+        status: 400, // Bad Request
+        message: "Username or Password is missing.",
       });
     }
-  };
-  
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return responseHandler(res, {
+        success: false,
+        status: 409, // Conflict
+        message: "Account already exists with this username.",
+      });
+    }
+
+    // Create new user
+    const newUser = await User.create({ fullName, username, password });
+
+    // Generate tokens
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+      newUser._id
+    );
+
+    // Save refresh token to user
+    newUser.refreshToken = refreshToken;
+    await newUser.save();
+
+    // Set refresh token as httpOnly cookie
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: true,
+      sameSite: "strict",
+    });
+
+    // Prepare user object without sensitive fields
+    const userObject = newUser.toObject();
+    delete userObject.password;
+
+    // Send success response
+    return responseHandler(res, {
+      success: true,
+      status: 201, // Created
+      message: "Account registered successfully.",
+      data: {
+        accessToken,
+        user: userObject,
+      },
+    });
+  } catch (error) {
+    console.error("Registration Error:", error);
+
+    return responseHandler(res, {
+      success: false,
+      status: 500,
+      message: "Internal server error during registration.",
+      error: error.message || error,
+    });
+  }
+};
+
+const loginUser = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Check for missing credentials
+    if (!username?.trim() || !password?.trim()) {
+      return responseHandler(res, {
+        success: false,
+        status: 400, // Bad Request
+        message: "Username and password are required.",
+      });
+    }
+
+    // Check if user exists
+    const existingUser = await User.findOne({ username });
+    if (!existingUser) {
+      return responseHandler(res, {
+        success: false,
+        status: 404, // Not Found
+        message: "User does not exist.",
+      });
+    }
+
+    // Validate password
+    const isPasswordValid = await existingUser.isPasswordCorrect(password);
+    if (!isPasswordValid) {
+      return responseHandler(res, {
+        success: false,
+        status: 401, // Unauthorized
+        message: "Invalid username or password.",
+      });
+    }
+
+    // Generate tokens
+    const accessToken = existingUser.generateAccessToken();
+    const refreshToken = existingUser.generateRefreshToken();
+
+    // Persist refresh token
+    existingUser.refreshToken = refreshToken;
+    await existingUser.save();
+
+    // Set secure HTTP-only cookie
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      maxAge: 20 * 1000,
+      secure: true,
+      sameSite: "strict",
+    });
+
+    // Prepare user object
+    const userObject = existingUser.toObject();
+    delete userObject.password;
+
+    // Final response
+    return responseHandler(res, {
+      success: true,
+      status: 200,
+      message: "Login successful.",
+      data: {
+        user: userObject,
+      },
+    });
+  } catch (error) {
+    console.error("[LOGIN_USER_ERROR]", error);
+
+    return responseHandler(res, {
+      success: false,
+      status: 500,
+      message: "Internal server error during login.",
+      error: typeof error === "object" ? error.message : String(error),
+    });
+  }
+};
+
 const getUsers = async (req, res) => {
   try {
     const data = await User.find();
